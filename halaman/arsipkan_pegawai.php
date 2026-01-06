@@ -5,9 +5,6 @@ require_once "../config/auth_guard.php";
 require_once "../config/maintenance_guard.php";
 require_once "../config/token.php";
 
-/* =========================
-   VALIDASI REQUEST
-========================= */
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: pegawai.php");
     exit;
@@ -15,9 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 token_check();
 
-/* =========================
-   VALIDASI ID
-========================= */
 $id = $_POST['id'] ?? null;
 if (!$id || !is_numeric($id)) {
     header("Location: pegawai.php");
@@ -26,9 +20,6 @@ if (!$id || !is_numeric($id)) {
 
 $id = (int)$id;
 
-/* =========================
-   CEK PEGAWAI
-========================= */
 $q = mysqli_query($conn, "
     SELECT id_pegawai
     FROM pegawai
@@ -45,9 +36,6 @@ if (!mysqli_fetch_assoc($q)) {
     exit;
 }
 
-/* =========================
-   ARSIPKAN
-========================= */
 $arsip = mysqli_query($conn, "
     UPDATE pegawai
     SET status_data = 'arsip'

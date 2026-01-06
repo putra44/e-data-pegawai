@@ -16,9 +16,6 @@ if ($id <= 0) {
     exit;
 }
 
-/* =========================
-   AMBIL DATA DOKUMEN
-========================= */
 $query = mysqli_query($conn, "
     SELECT d.*, k.nama_kategori
     FROM dokumen d
@@ -34,9 +31,6 @@ if (!$data) {
     exit;
 }
 
-/* =========================
-   AMBIL FILE DOKUMEN
-========================= */
 $folder = "../assets/uploads/dokumen/$id/";
 $files = [];
 
@@ -80,8 +74,6 @@ if (is_dir($folder)) {
     </div>
 <?php unset($_SESSION['flash']); endif; ?>
 
-
-<!-- CARD DETAIL + DESKRIPSI -->
 <div class="card mb-3">
 <div class="card-body">
 
@@ -143,7 +135,6 @@ if (is_dir($folder)) {
 </div>
 </div>
 
-<!-- FILE DOKUMEN -->
 <div class="card">
 <div class="card-body">
 
@@ -184,7 +175,6 @@ if (is_dir($folder)) {
     <p class="text-muted text-center">Belum ada file yang diupload</p>
 <?php endif; ?>
 
-<!-- TOMBOL AKSI DI DALAM CARD -->
 <div class="d-flex justify-content-end">
     <a href="dokumen.php" class="btn btn-secondary btn-sm mr-2">
         <i class="fa fa-arrow-left"></i> Kembali

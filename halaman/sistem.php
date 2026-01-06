@@ -10,25 +10,18 @@ require_once "../config/token.php";
 $active    = 'admin-panel';
 $subactive = 'sistem';
 
-/* =========================
-   AMBIL SETTING
-========================= */
 $settings = [];
 $q = mysqli_query($conn, "SELECT * FROM settings");
 while ($row = mysqli_fetch_assoc($q)) {
     $settings[$row['setting_key']] = $row['setting_value'];
 }
 
-/* =========================
-   SIMPAN PENGATURAN
-========================= */
 if (isset($_POST['simpan_umum']) || isset($_POST['simpan_maintenance'])) {
 
     token_check();
 
     if (isset($_POST['app_version']) && $_POST['app_version'] !== '') {
 
-        // hanya angka dan titik (contoh: 1.0.0)
         if (!preg_match('/^[0-9]+(\.[0-9]+)*$/', $_POST['app_version'])) {
             $_SESSION['error'] = "Versi aplikasi hanya boleh angka dan titik (.)";
             header("Location: sistem.php");
@@ -54,9 +47,6 @@ if (isset($_POST['simpan_umum']) || isset($_POST['simpan_maintenance'])) {
     exit;
 }
 
-/* =========================
-   FORCE LOGOUT PETUGAS
-========================= */
 if (isset($_POST['force_logout_petugas'])) {
 
     token_check();
@@ -77,16 +67,12 @@ if (!empty($settings['timezone'])) {
     date_default_timezone_set($settings['timezone']);
 }
 
-/* =========================
-   UPLOAD LOGO
-========================= */
 if (isset($_POST['upload_logo'])) {
 
     token_check();
 
     if (!empty($_FILES['app_logo']['name'])) {
 
-        // 🔒 VALIDASI UKURAN (MAX 2MB)
         $maxSize = 2 * 1024 * 1024; // 2MB
 
         if ($_FILES['app_logo']['size'] > $maxSize) {
@@ -131,9 +117,7 @@ if (isset($_POST['upload_logo'])) {
     header("Location: sistem.php");
     exit;
 }
-/* =========================
-   HAPUS LOGO
-========================= */
+
 if (isset($_POST['hapus_logo'])) {
 
     token_check();

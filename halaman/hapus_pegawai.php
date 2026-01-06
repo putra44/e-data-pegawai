@@ -5,20 +5,13 @@ require_once "../config/auth_guard.php";
 require_once "../config/maintenance_guard.php";
 require_once "../config/token.php";
 
-/* =========================
-   VALIDASI REQUEST
-========================= */
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: arsip_data_pegawai.php");
     exit;
 }
 
-// 🔐 CSRF TOKEN CHECK
 token_check();
 
-/* =========================
-   VALIDASI ID
-========================= */
 $id = $_POST['id'] ?? null;
 if (!$id || !is_numeric($id)) {
     header("Location: arsip_data_pegawai.php");
@@ -27,9 +20,6 @@ if (!$id || !is_numeric($id)) {
 
 $id = (int)$id;
 
-/* =========================
-   CEK DATA PEGAWAI
-========================= */
 $q = mysqli_query($conn, "
     SELECT id_pegawai, status, status_data
     FROM pegawai
@@ -47,11 +37,6 @@ if (mysqli_num_rows($q) !== 1) {
 
 $data = mysqli_fetch_assoc($q);
 
-/* =========================
-   SYARAT WAJIB HAPUS
-========================= */
-
-// 1️⃣ WAJIB SUDAH ARSIP
 if ($data['status_data'] !== 'arsip') {
     $_SESSION['flash'] = [
         'type' => 'warning',
@@ -61,7 +46,6 @@ if ($data['status_data'] !== 'arsip') {
     exit;
 }
 
-// 2️⃣ WAJIB NONAKTIF
 if ($data['status'] !== 'nonaktif') {
     $_SESSION['flash'] = [
         'type' => 'warning',
@@ -71,9 +55,6 @@ if ($data['status'] !== 'nonaktif') {
     exit;
 }
 
-/* =========================
-   HAPUS PERMANEN
-========================= */
 $hapus = mysqli_query($conn, "
     DELETE FROM pegawai
     WHERE id_pegawai = $id
@@ -81,7 +62,6 @@ $hapus = mysqli_query($conn, "
 
 if ($hapus) {
 
-    // 🔁 optional: rotasi token
     unset($_SESSION['token']);
 
     $_SESSION['flash'] = [

@@ -7,9 +7,6 @@ require_once "../config/maintenance_guard.php";
 require_once "../config/settings.php";
 require_once "../config/token.php";
 
-// ============================
-// VALIDASI ID
-// ============================
 $id = $_GET['id'] ?? null;
 $id = is_numeric($id) ? (int)$id : 0;
 
@@ -18,8 +15,6 @@ if ($id <= 0) {
     exit;
 }
 
-
-// Ambil data petugas
 $query = mysqli_query($conn, "
     SELECT * FROM users 
     WHERE id_user='$id' AND role='petugas'
@@ -34,9 +29,6 @@ if (!$petugas) {
 $active    = 'admin-panel';
 $subactive = 'petugas';
 
-// ============================
-// PROSES UPDATE
-// ============================
 if (isset($_POST['simpan'])) {
 
     token_check();
@@ -54,9 +46,6 @@ if (isset($_POST['simpan'])) {
         $username = '@' . $username;
     }
 
-    // ============================
-    // VALIDASI
-    // ============================
     if ($nama === '' || $username === '' || $no_petugas === '' || $shift === '') {
 
         $_SESSION['flash'] = [
@@ -99,9 +88,6 @@ if (isset($_POST['simpan'])) {
         exit;
     }
 
-    // ============================
-    // UPDATE DATA
-    // ============================
     mysqli_query($conn, "
         UPDATE users SET
             nama='$nama',
@@ -165,8 +151,7 @@ if (isset($_POST['simpan'])) {
     <form method="POST">
         <input type="hidden" name="token" value="<?= $_SESSION['token']; ?>">
         <div class="row">
-
-            <!-- DATA PETUGAS -->
+            
             <div class="col-md-8">
                 <div class="card mb-3">
                     <div class="card-header font-weight-bold">Data Petugas</div>
@@ -216,7 +201,6 @@ if (isset($_POST['simpan'])) {
                 </div>
             </div>
 
-            <!-- KEAMANAN & SISTEM -->
             <div class="col-md-4">
                 <div class="card mb-3">
                     <div class="card-header font-weight-bold">Keamanan</div>

@@ -16,9 +16,6 @@ if ($id <= 0) {
     exit;
 }
 
-/* =========================
-   AMBIL DATA DOKUMEN
-========================= */
 $qDok = mysqli_query($conn, "
     SELECT * FROM dokumen
     WHERE id_dokumen = $id
@@ -31,9 +28,6 @@ if (!$data) {
     exit;
 }
 
-/* =========================
-   AMBIL KATEGORI
-========================= */
 $qKategori = mysqli_query($conn, "
     SELECT id_kategori, nama_kategori
     FROM kategori_dokumen
@@ -41,24 +35,15 @@ $qKategori = mysqli_query($conn, "
     ORDER BY nama_kategori ASC
 ");
 
-/* =========================
-   FOLDER FILE
-========================= */
 $folder = "../assets/uploads/dokumen/$id/";
 if (!is_dir($folder)) {
     mkdir($folder, 0755, true);
 }
 
-/* =========================
-   PROSES UPDATE
-========================= */
 if (isset($_POST['simpan'])) {
 
     token_check();
     
-    /* =========================
-       VALIDASI NO DOKUMEN
-    ========================= */
     $no_dokumen = trim($_POST['no_dokumen']);
 
     if (!preg_match('/^[0-9\/\-]+$/', $no_dokumen)) {
@@ -76,9 +61,6 @@ if (isset($_POST['simpan'])) {
     $id_kategori  = (int)$_POST['id_kategori'];
     $status_dok   = $_POST['status_dok'];
 
-    /* =========================
-       VALIDASI FIELD WAJIB
-    ========================= */
     if ($no_dokumen === '' || $nama_dokumen === '' || $nama_pemilik === '') {
         $_SESSION['flash'] = [
             'type' => 'danger',
@@ -88,9 +70,6 @@ if (isset($_POST['simpan'])) {
         exit;
     }
 
-    /* =========================
-       CEK NO DOKUMEN UNIK
-    ========================= */
     $cek = mysqli_query($conn, "
         SELECT id_dokumen FROM dokumen
         WHERE no_dokumen = '".mysqli_real_escape_string($conn, $no_dokumen)."'
@@ -105,10 +84,6 @@ if (isset($_POST['simpan'])) {
         exit;
     }
 
-    /* =========================
-       VALIDASI TOTAL FILE 10MB
-       (FILE LAMA + FILE BARU)
-    ========================= */
     $total_size = 0;
 
     // hitung file lama
@@ -132,9 +107,6 @@ if (isset($_POST['simpan'])) {
         exit;
     }
 
-    /* =========================
-       UPDATE DATA DOKUMEN
-    ========================= */
     mysqli_query($conn, "
         UPDATE dokumen SET
             no_dokumen   = '".mysqli_real_escape_string($conn, $no_dokumen)."',
@@ -146,9 +118,6 @@ if (isset($_POST['simpan'])) {
         WHERE id_dokumen = $id
     ");
 
-    /* =========================
-       UPLOAD FILE BARU (OPSIONAL)
-    ========================= */
     $allowed_ext  = ['pdf','doc','docx','jpg','jpeg','png'];
     $allowed_mime = [
         'application/pdf',
@@ -178,10 +147,7 @@ if (isset($_POST['simpan'])) {
     }
 
     finfo_close($finfo);
-
-    /* =========================
-       UPDATE JUMLAH FILE
-    ========================= */
+    
     $jumlah_file = count(scandir($folder)) - 2;
     mysqli_query($conn, "
         UPDATE dokumen

@@ -22,7 +22,6 @@ if ($id_dokumen <= 0 || !$file) {
     exit;
 }
 
-/* CEK DOKUMEN */
 $cek = mysqli_query($conn, "
     SELECT id_dokumen FROM dokumen
     WHERE id_dokumen = $id_dokumen
@@ -36,12 +35,10 @@ if (mysqli_num_rows($cek) === 0) {
 $folder = "../assets/uploads/dokumen/$id_dokumen/";
 $path   = $folder . $file;
 
-/* HAPUS FILE */
 if (is_file($path)) {
     unlink($path);
 }
 
-/* UPDATE JUMLAH FILE */
 $total = is_dir($folder) ? count(scandir($folder)) - 2 : 0;
 mysqli_query($conn, "
     UPDATE dokumen
@@ -49,12 +46,10 @@ mysqli_query($conn, "
     WHERE id_dokumen = $id_dokumen
 ");
 
-/* FLASH MESSAGE */
 $_SESSION['flash'] = [
     'type' => 'success',
     'message' => 'File berhasil dihapus'
 ];
 
-/* ⬅️ REDIRECT BALIK KE DETAIL */
 header("Location: detail_dokumen.php?id=$id_dokumen");
 exit;

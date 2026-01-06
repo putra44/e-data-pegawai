@@ -5,14 +5,12 @@ require_once "../config/auth_guard.php";
 require_once "../config/maintenance_guard.php";
 require_once "../config/settings.php";
 
-// Validasi ID
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($id <= 0) {
     header("Location: pegawai.php");
     exit;
 }
 
-// Ambil data pegawai
 $query = mysqli_query($conn, "
     SELECT 
         p.*,

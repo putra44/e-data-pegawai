@@ -19,11 +19,7 @@ $message = $settings['maintenance_message'] ?? 'Sistem sedang dalam pemeliharaan
     <meta charset="UTF-8">
     <title>Maintenance | <?= htmlspecialchars($settings['app_name'] ?? 'e-DATA Pegawai'); ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap -->
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="assets/font-awesome-4.7.0/css/font-awesome.min.css">
 
     <style>
@@ -51,20 +47,16 @@ $message = $settings['maintenance_message'] ?? 'Sistem sedang dalam pemeliharaan
 <div class="card maintenance-card shadow text-center p-4">
     <div class="card-body">
 
-        <!-- ICON -->
         <div class="maintenance-icon mb-3">
             <i class="fa fa-cogs"></i>
         </div>
-
-        <!-- TITLE -->
+        
         <h4 class="mb-3">Sistem Dalam Pemeliharaan..</h4>
 
-        <!-- MESSAGE -->
         <p class="text-muted mb-4">
             <?= htmlspecialchars($message); ?>
         </p>
 
-        <!-- FOOTER (SINKRON SISTEM.PHP) -->
         <small class="text-muted">
             © <?= date('Y'); ?>
             <b><?= htmlspecialchars($settings['app_name'] ?? 'e-DATA Pegawai'); ?></b>

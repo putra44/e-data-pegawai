@@ -8,9 +8,6 @@ require_once "../config/token.php";
 
 $active = 'dokumen';
 
-/* =========================
-   AMBIL KATEGORI
-========================= */
 $qKategori = mysqli_query($conn, "
     SELECT id_kategori, nama_kategori
     FROM kategori_dokumen
@@ -18,16 +15,10 @@ $qKategori = mysqli_query($conn, "
     ORDER BY nama_kategori ASC
 ");
 
-/* =========================
-   PROSES SIMPAN
-========================= */
 if (isset($_POST['simpan'])) {
 
     token_check();
 
-    /* =========================
-       VALIDASI NO DOKUMEN
-    ========================= */
     $no_dokumen = trim($_POST['no_dokumen']);
 
     if (!preg_match('/^[0-9\/\-]+$/', $no_dokumen)) {
@@ -46,9 +37,6 @@ if (isset($_POST['simpan'])) {
     $status_dok    = $_POST['status_dok'];
     $diunggah_oleh = $_SESSION['nama'] ?? 'system';
 
-    /* =========================
-       VALIDASI FIELD WAJIB
-    ========================= */
     if ($no_dokumen === '' || $nama_dokumen === '' || $nama_pemilik === '') {
         $_SESSION['flash'] = [
             'type' => 'danger',
@@ -58,9 +46,6 @@ if (isset($_POST['simpan'])) {
         exit;
     }
 
-    /* =========================
-       CEK NO DOKUMEN UNIK
-    ========================= */
     $cek = mysqli_query($conn, "
         SELECT id_dokumen FROM dokumen
         WHERE no_dokumen = '".mysqli_real_escape_string($conn, $no_dokumen)."'
@@ -74,9 +59,6 @@ if (isset($_POST['simpan'])) {
         exit;
     }
 
-    /* =========================
-       VALIDASI TOTAL FILE 10MB
-    ========================= */
     if (!empty($_FILES['file_dokumen']['name'][0])) {
 
         $total_size = array_sum($_FILES['file_dokumen']['size']);
@@ -92,9 +74,6 @@ if (isset($_POST['simpan'])) {
         }
     }
 
-    /* =========================
-       INSERT DATA DOKUMEN
-    ========================= */
     mysqli_query($conn, "
         INSERT INTO dokumen
         (no_dokumen, nama_dokumen, deskripsi, nama_pemilik,
@@ -113,9 +92,6 @@ if (isset($_POST['simpan'])) {
 
     $id_dokumen = mysqli_insert_id($conn);
 
-    /* =========================
-       UPLOAD FILE (AMAN)
-    ========================= */
     $upload_dir = "../assets/uploads/dokumen/$id_dokumen/";
     if (!is_dir($upload_dir)) {
         mkdir($upload_dir, 0755, true);
@@ -145,7 +121,6 @@ if (isset($_POST['simpan'])) {
             if (!in_array($ext, $allowed_ext)) continue;
             if (!in_array($mime, $allowed_mime)) continue;
 
-            // 🔥 NAMA FILE MANUSIAWI
             $original = pathinfo($name, PATHINFO_FILENAME);
             $original = preg_replace('/[^a-zA-Z0-9_\- ]/', '', $original);
             $original = trim($original);
@@ -161,9 +136,6 @@ if (isset($_POST['simpan'])) {
 
     finfo_close($finfo);
 
-    /* =========================
-       UPDATE JUMLAH FILE
-    ========================= */
     mysqli_query($conn, "
         UPDATE dokumen
         SET jumlah_file = $jumlah_file

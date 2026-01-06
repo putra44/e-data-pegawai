@@ -13,9 +13,6 @@ if (!$id) {
     exit;
 }
 
-/* =========================
-   AMBIL DATA PENGUMUMAN
-========================= */
 $q = mysqli_query($conn, "
     SELECT * FROM pengumuman 
     WHERE id_pengumuman='$id'
@@ -27,9 +24,6 @@ if (!$data) {
     exit;
 }
 
-/* =========================
-   UPDATE PENGUMUMAN
-========================= */
 if (isset($_POST['update'])) {
 
     token_check();

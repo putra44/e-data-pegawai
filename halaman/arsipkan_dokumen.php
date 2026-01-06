@@ -20,7 +20,6 @@ if ($id <= 0) {
     exit;
 }
 
-/* CEK DOKUMEN */
 $q = mysqli_query($conn, "
     SELECT id_dokumen
     FROM dokumen
@@ -37,7 +36,6 @@ if (!mysqli_fetch_assoc($q)) {
     exit;
 }
 
-/* ARSIPKAN */
 mysqli_query($conn, "
     UPDATE dokumen
     SET deleted_at = NOW()
@@ -49,6 +47,5 @@ $_SESSION['flash'] = [
     'message' => 'Dokumen berhasil diarsipkan'
 ];
 
-/* 🔥 REDIRECT KE ARSIP DOKUMEN */
 header("Location: arsip_dokumen.php");
 exit;

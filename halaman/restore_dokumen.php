@@ -20,7 +20,6 @@ if ($id <= 0) {
     exit;
 }
 
-/* AMBIL DATA DOKUMEN YANG DIARSIP */
 $q = mysqli_query($conn, "
     SELECT id_dokumen
     FROM dokumen
@@ -30,7 +29,6 @@ $q = mysqli_query($conn, "
 
 $data = mysqli_fetch_assoc($q);
 
-/* CEK VALID */
 if (!$data) {
     $_SESSION['flash'] = [
         'type' => 'danger',
@@ -40,14 +38,12 @@ if (!$data) {
     exit;
 }
 
-/* RESTORE DOKUMEN */
 mysqli_query($conn, "
     UPDATE dokumen
     SET deleted_at = NULL
     WHERE id_dokumen = $id
 ");
 
-/* FLASH MESSAGE (KE ARSIP DOKUMEN) */
 $_SESSION['flash'] = [
     'type' => 'success',
     'message' => 'Dokumen berhasil dipulihkan dari arsip'

@@ -4,7 +4,6 @@ require_once "../config/database.php";
 require_once "../config/auth_guard.php";
 require_once "../config/maintenance_guard.php";
 
-// SEARCH
 $keyword = $_GET['q'] ?? '';
 $where = "";
 if ($keyword != '') {
@@ -12,13 +11,11 @@ if ($keyword != '') {
     $where = "WHERE nip LIKE '%$safe%' OR nama LIKE '%$safe%'";
 }
 
-// PAGINATION (SAMA PERSIS)
 $limit = 20;
 $page = $_GET['page'] ?? 1;
 $page = is_numeric($page) ? (int)$page : 1;
 $offset = ($page - 1) * $limit;
 
-// DATA
 $query = mysqli_query($conn, "
     SELECT * FROM pegawai
     $where

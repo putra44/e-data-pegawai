@@ -10,18 +10,13 @@ if (isset($_SESSION['login']) && $_SESSION['login'] === true) {
 }
 
 // PROSES LOGIN
-// PROSES LOGIN
 if (isset($_POST['login'])) {
 
-    // =========================
-    // VALIDASI CAPTCHA
-    // =========================
     $captcha_input   = trim($_POST['captcha'] ?? '');
     $captcha_session = $_SESSION['captcha_code'] ?? '';
 
     if ($captcha_input === '' || $captcha_input !== $captcha_session) {
 
-        // ❗ PAKAI FLASH MESSAGE
         $_SESSION['error'] = "Kode keamanan (captcha) salah!";
         unset($_SESSION['captcha_code']); // reset captcha
 
@@ -33,9 +28,6 @@ if (isset($_POST['login'])) {
         // captcha benar → hapus agar tidak bisa dipakai ulang
         unset($_SESSION['captcha_code']);
 
-        // =========================
-        // VALIDASI LOGIN
-        // =========================
         $username = trim($_POST['username']);
         $password = $_POST['password'];
 
@@ -79,7 +71,6 @@ if (isset($_POST['login'])) {
 
             } else {
 
-                // ❗ FLASH MESSAGE
                 $_SESSION['error'] = "Password salah!";
                 header("Location: login.php");
                 exit;
@@ -87,7 +78,6 @@ if (isset($_POST['login'])) {
 
         } else {
 
-            // ❗ FLASH MESSAGE
             $_SESSION['error'] = "Username tidak ditemukan atau akun nonaktif!";
             header("Location: login.php");
             exit;
@@ -102,17 +92,11 @@ if (isset($_POST['login'])) {
     <meta charset="UTF-8">
     <title>Login | e-DATA Pegawai</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap 4 -->
     <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-
-    <!-- Font Awesome 4 -->
     <link rel="stylesheet" href="../assets/font-awesome-4.7.0/css/font-awesome.min.css">
 
-    <style>
-/* ===============================
-   RESET DASAR
-================================ */
+<style>
+
 * {
     box-sizing: border-box;
 }
@@ -123,17 +107,11 @@ html, body {
     height: 100%;
 }
 
-/* ===============================
-   BODY (LOGIN PAGE)
-================================ */
 body {
     font-family: "Segoe UI", sans-serif;
     background: #f8f9fa;
 }
 
-/* ===============================
-   LOGIN FULLSCREEN
-================================ */
 .login-wrapper {
     position: fixed;
     inset: 0;
@@ -147,9 +125,6 @@ body {
     background-size: cover;
 }
 
-/* ===============================
-   LOGIN CARD
-================================ */
 .login-card {
     width: 100%;
     max-width: 420px;
@@ -161,26 +136,20 @@ body {
 }
 
 .login-card .card-body {
-    padding: 26px; /* lebih pendek */
+    padding: 26px;
 }
 
-/* ===============================
-   HEADER LOGIN
-================================ */
 .login-card img {
-    max-height: 90px; /* logo diperkecil */
+    max-height: 90px;
 }
 
-/* ===============================
-   LOGO LOGIN (NORMAL / ASLI)
-================================ */
 .login-logo {
     max-width: 140px;
     max-height: 120px;
     width: auto;
     height: auto;
 
-    object-fit: contain; /* ⬅️ PENTING: logo tidak terpotong */
+    object-fit: contain;
     display: block;
     margin: 0 auto 14px auto;
 }
@@ -196,9 +165,6 @@ body {
     color: #6c757d;
 }
 
-/* ===============================
-   FORM & INPUT
-================================ */
 .form-group {
     margin-bottom: 14px;
 }
@@ -218,9 +184,6 @@ body {
     border-radius: 8px 0 0 8px;
 }
 
-/* ===============================
-   BUTTON LOGIN
-================================ */
 .btn-login {
     height: 42px;
     font-weight: 600;
@@ -233,9 +196,6 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,.15);
 }
 
-/* ===============================
-   FOOTER LOGIN (DALAM CARD)
-================================ */
 hr.my-4 {
     margin-top: 16px;
     margin-bottom: 12px;
@@ -245,16 +205,14 @@ small.text-muted {
     font-size: 12px;
 }
 
-/* ===============================
-   RESPONSIVE (LAYAR PENDEK)
-================================ */
 @media (max-height: 700px) {
     .login-card {
         transform: scale(0.95);
     }
 }
 
-    </style>
+</style>
+    
 </head>
 
 <body>
@@ -263,7 +221,6 @@ small.text-muted {
         <div class="card login-card shadow-sm">
             <div class="card-body">
 
-                <!-- HEADER -->
                 <div class="text-center mb-4">
 
                     <?php if (!empty($settings['app_logo'])) : ?>
@@ -282,7 +239,6 @@ small.text-muted {
                     </div>
                 </div>
 
-                <!-- LOGOUT SUCCESS MESSAGE -->
                 <?php if (isset($_SESSION['logout_success'])) : ?>
                     <div class="alert alert-success text-center">
                         <i class="fa fa-check-circle"></i>
@@ -291,15 +247,12 @@ small.text-muted {
                     <?php unset($_SESSION['logout_success']); ?>
                 <?php endif; ?>
 
-
-                <!-- ERROR MESSAGE -->
                 <?php if (isset($error)) : ?>
                     <div class="alert alert-danger text-center">
                         <?= $error; ?>
                     </div>
                 <?php endif; ?>
 
-                <!-- FLASH ERROR MESSAGE -->
                     <?php if (isset($_SESSION['error'])) : ?>
                         <div class="alert alert-danger text-center">
                             <i class="fa fa-times-circle"></i>
@@ -308,10 +261,7 @@ small.text-muted {
                         <?php unset($_SESSION['error']); ?>
                     <?php endif; ?>
 
-                <!-- FORM LOGIN -->
                 <form method="POST" autocomplete="off">
-
-                    <!-- USERNAME -->
                     <div class="form-group">
                         <label>Username</label>
                         <div class="input-group">
@@ -330,7 +280,6 @@ small.text-muted {
                         </div>
                     </div>
 
-                    <!-- PASSWORD -->
                     <div class="form-group">
                         <label>Password</label>
                         <div class="input-group">
@@ -349,7 +298,6 @@ small.text-muted {
                         </div>
                     </div>
 
-                    <!-- CAPTCHA -->
                     <div class="form-group">
                         <label>Kode Keamanan</label>
                         <div class="d-flex align-items-center mb-2">
@@ -376,13 +324,11 @@ small.text-muted {
                         >
                     </div>
 
-                    <!-- BUTTON -->
                     <button type="submit" name="login" class="btn btn-primary btn-block btn-login">
                         <i class="fa fa-sign-in mr-1"></i> LOGIN
                     </button>
                 </form>
 
-                <!-- FOOTER LOGIN -->
                 <hr class="my-4">
 
                 <small class="text-muted d-block text-center">
@@ -402,7 +348,6 @@ small.text-muted {
     </div>
 </div>
 
-<!-- JS -->
 <script src="../assets/bootstrap/js/jquery.min.js"></script>
 <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
 <script>

@@ -13,9 +13,6 @@ $id = $_SESSION['id_user'];
 $query = mysqli_query($conn, "SELECT * FROM users WHERE id_user='$id'");
 $user = mysqli_fetch_assoc($query);
 
-// ============================
-// DATA PETUGAS (DARI USERS)
-// ============================
 $dataPetugas = null;
 
 if ($user['role'] === 'petugas') {
@@ -25,9 +22,6 @@ if ($user['role'] === 'petugas') {
     ];
 }
 
-// ============================
-// UPDATE PROFIL
-// ============================
 if (isset($_POST['update_profil'])) {
 
     token_check();
@@ -130,9 +124,6 @@ if (isset($_POST['update_profil'])) {
     exit;
 }
 
-// ============================
-// HAPUS FOTO PROFIL
-// ============================
 if (isset($_POST['hapus_foto'])) {
 
     token_check();
@@ -162,9 +153,6 @@ if (isset($_POST['hapus_foto'])) {
     exit;
 }
 
-// ============================
-// GANTI PASSWORD
-// ============================
 if (isset($_POST['ganti_password'])) {
 
     token_check();
@@ -210,7 +198,6 @@ if (isset($_POST['ganti_password'])) {
     <?php endif; ?>
 
     <div class="row">
-        <!-- INFO USER -->
         <div class="col-md-4 text-center">
             <div class="card">
                 <div class="card-body">
@@ -239,7 +226,6 @@ if (isset($_POST['ganti_password'])) {
             </div>
         </div>
 
-        <!-- FORM -->
         <div class="col-md-8">
             <div class="card mb-3">
                 <div class="card-header font-weight-bold">Edit Profil</div>

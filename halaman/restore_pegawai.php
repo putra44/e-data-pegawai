@@ -5,20 +5,14 @@ require_once "../config/auth_guard.php";
 require_once "../config/maintenance_guard.php";
 require_once "../config/token.php";
 
-/* =========================
-   VALIDASI REQUEST
-========================= */
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: arsip_data_pegawai.php");
     exit;
 }
 
-// 🔐 CSRF CHECK
 token_check();
 
-/* =========================
-   VALIDASI ID
-========================= */
 $id = $_POST['id'] ?? null;
 if (!$id || !is_numeric($id)) {
     header("Location: arsip_data_pegawai.php");
@@ -27,9 +21,6 @@ if (!$id || !is_numeric($id)) {
 
 $id = (int)$id;
 
-/* =========================
-   RESTORE DATA
-========================= */
 $restore = mysqli_query($conn, "
     UPDATE pegawai 
     SET status_data = 'aktif'
@@ -38,7 +29,6 @@ $restore = mysqli_query($conn, "
 
 if ($restore) {
 
-    // 🔁 optional: rotasi token
     unset($_SESSION['token']);
 
     $_SESSION['flash'] = [

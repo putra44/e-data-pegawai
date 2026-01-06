@@ -20,7 +20,6 @@ if ($id <= 0) {
     exit;
 }
 
-/* AMBIL DATA DOKUMEN */
 $q = mysqli_query($conn, "
     SELECT id_dokumen, status_dok
     FROM dokumen
@@ -30,7 +29,6 @@ $q = mysqli_query($conn, "
 
 $data = mysqli_fetch_assoc($q);
 
-/* CEK VALID */
 if (!$data) {
     $_SESSION['flash'] = [
         'type' => 'danger',
@@ -40,7 +38,6 @@ if (!$data) {
     exit;
 }
 
-/* BLOK JIKA STATUS MASIH BERLAKU */
 if ($data['status_dok'] === 'berlaku') {
     $_SESSION['flash'] = [
         'type' => 'warning',
@@ -50,7 +47,6 @@ if ($data['status_dok'] === 'berlaku') {
     exit;
 }
 
-/* HAPUS FOLDER FILE */
 $folder = "../assets/uploads/dokumen/$id/";
 if (is_dir($folder)) {
     foreach (glob($folder . "*") as $file) {
@@ -59,13 +55,11 @@ if (is_dir($folder)) {
     rmdir($folder);
 }
 
-/* HAPUS DATA DB */
 mysqli_query($conn, "
     DELETE FROM dokumen
     WHERE id_dokumen = $id
 ");
 
-/* FLASH MESSAGE */
 $_SESSION['flash'] = [
     'type' => 'success',
     'message' => 'Dokumen berhasil dihapus permanen'

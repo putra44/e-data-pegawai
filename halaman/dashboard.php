@@ -9,10 +9,6 @@ require_once "../helpers/date.php";
 
 $active = 'dashboard';
 
-/* =====================
-   QUERY DASHBOARD
-===================== */
-
 // TOTAL PEGAWAI
 $qTotal = mysqli_query($conn, "SELECT COUNT(*) AS total FROM pegawai");
 $totalPegawai = mysqli_fetch_assoc($qTotal)['total'] ?? 0;
@@ -45,9 +41,6 @@ $dokKadaluarsa = mysqli_fetch_assoc($qDokKadaluarsa)['kadaluarsa'] ?? 0;
 $qArsipDokumen = mysqli_query($conn, "SELECT COUNT(*) AS arsip FROM dokumen WHERE deleted_at IS NOT NULL");
 $arsipDokumen = mysqli_fetch_assoc($qArsipDokumen)['arsip'] ?? 0;
 
-/* =============
-  PENGUMUMAN 
-================ */
 $qPengumuman = mysqli_query($conn, "
     SELECT 
         p.*,
@@ -120,9 +113,6 @@ $qPengumuman = mysqli_query($conn, "
 </div>
 <?php endif; ?>
 
-<!-- ============
-PENGUMUMAN 
-================= -->
 <?php if (mysqli_num_rows($qPengumuman) > 0): ?>
 <div class="card shadow-sm mb-4">
 
@@ -185,9 +175,6 @@ PENGUMUMAN
 </div>
 <?php endif; ?>
 
-<!-- =========================
-     CARD STATISTIK
-========================= -->
 <div class="row">
 
     <div class="col-md-3 mb-3">

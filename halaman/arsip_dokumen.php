@@ -9,9 +9,6 @@ require_once "../config/token.php";
 $active    = 'arsip-data';
 $subactive = 'arsip-dokumen';
 
-/* =========================
-   SEARCH & FILTER
-========================= */
 $keyword     = $_GET['q'] ?? '';
 $id_kategori = $_GET['id_kategori'] ?? '';
 
@@ -32,18 +29,12 @@ if ($id_kategori != '') {
     $where .= " AND d.id_kategori = $id_kategori";
 }
 
-/* =========================
-   PAGINATION
-========================= */
 $limit = 10;
 $page  = $_GET['page'] ?? 1;
 $page  = is_numeric($page) ? (int)$page : 1;
 $page  = max(1, $page);
 $offset = ($page - 1) * $limit;
 
-/* =========================
-   TOTAL DATA
-========================= */
 $totalQ = mysqli_query($conn, "
     SELECT COUNT(*) AS total
     FROM dokumen d
@@ -53,9 +44,6 @@ $totalQ = mysqli_query($conn, "
 $totalData = mysqli_fetch_assoc($totalQ)['total'];
 $totalPage = ceil($totalData / $limit);
 
-/* =========================
-   DATA ARSIP DOKUMEN
-========================= */
 $query = mysqli_query($conn, "
     SELECT d.*, k.nama_kategori
     FROM dokumen d
@@ -65,9 +53,6 @@ $query = mysqli_query($conn, "
     LIMIT $limit OFFSET $offset
 ");
 
-/* =========================
-   DATA KATEGORI
-========================= */
 $qKategori = mysqli_query($conn, "
     SELECT id_kategori, nama_kategori
     FROM kategori_dokumen

@@ -70,6 +70,7 @@ Beberapa tampilan utama aplikasi:
 - Data Pegawai
 - Dokumen & Arsip
 - Pengaturan Sistem
+- Halaman Profil
 
 ## Preview Aplikasi
 

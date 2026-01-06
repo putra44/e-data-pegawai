@@ -8,9 +8,6 @@ require_once "../config/token.php";
 
 $active = 'pegawai';
 
-/* =========================
-   AMBIL DATA KATEGORI
-========================= */
 $qJabatan = mysqli_query($conn, "
     SELECT id_jabatan, nama_jabatan
     FROM kategori_jabatan
@@ -23,9 +20,6 @@ $qDepartemen = mysqli_query($conn, "
     WHERE is_active = 1
 ");
 
-/* =========================
-   PROSES SIMPAN
-========================= */
 if (isset($_POST['simpan'])) {
 
     token_check();
@@ -33,14 +27,11 @@ if (isset($_POST['simpan'])) {
     $nip        = mysqli_real_escape_string($conn, $_POST['nip']);
     $nama       = mysqli_real_escape_string($conn, $_POST['nama']);
     $jk         = $_POST['jenis_kelamin'];
-
-    // ⬇️ INI PENTING: ambil ID, bukan nama
     $id_jabatan    = (int) $_POST['id_jabatan'];
     $id_departemen = (int) $_POST['id_departemen'];
 
     $alamat     = mysqli_real_escape_string($conn, $_POST['alamat']);
     $status     = $_POST['status'];
-
     $insert = mysqli_query($conn, "
         INSERT INTO pegawai 
         (nip, nama, jenis_kelamin, id_jabatan, id_departemen, alamat, status)

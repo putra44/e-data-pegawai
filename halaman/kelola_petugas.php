@@ -10,9 +10,6 @@ require_once "../config/token.php";
 $active    = 'admin-panel';
 $subactive = 'petugas';
 
-// =======================
-// DATA PETUGAS
-// =======================
 $query = mysqli_query($conn, "
     SELECT id_user, nama, username, no_petugas, shift, status
     FROM users
@@ -38,7 +35,6 @@ $query = mysqli_query($conn, "
 <div class="main-content">
 <div class="container mt-4">
 
-    <!-- JUDUL -->
     <div class="row mb-3">
         <div class="col-12 text-center">
             <h4 class="mb-0">
@@ -46,7 +42,6 @@ $query = mysqli_query($conn, "
         </div>
     </div>
 
-    <!-- FLASH MESSAGE -->
     <?php if (isset($_SESSION['flash'])): ?>
         <div class="alert alert-<?= $_SESSION['flash']['type']; ?> alert-dismissible fade show">
             <i class="fa <?= $_SESSION['flash']['type'] === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle'; ?>"></i>

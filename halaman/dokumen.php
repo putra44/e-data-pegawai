@@ -8,9 +8,6 @@ require_once "../config/token.php";
 
 $active = 'dokumen';
 
-/* =========================
-   SEARCH & FILTER
-========================= */
 $keyword     = $_GET['q'] ?? '';
 $id_kategori = $_GET['id_kategori'] ?? '';
 
@@ -31,18 +28,12 @@ if ($id_kategori != '') {
     $where .= " AND d.id_kategori = $id_kategori";
 }
 
-/* =========================
-   PAGINATION
-========================= */
 $limit = 10;
 $page  = $_GET['page'] ?? 1;
 $page  = is_numeric($page) ? (int)$page : 1;
 $page  = max(1, $page);
 $offset = ($page - 1) * $limit;
 
-/* =========================
-   TOTAL DATA
-========================= */
 $totalDataQuery = mysqli_query($conn, "
     SELECT COUNT(*) AS total 
     FROM dokumen d 
@@ -51,9 +42,6 @@ $totalDataQuery = mysqli_query($conn, "
 $totalData = mysqli_fetch_assoc($totalDataQuery)['total'];
 $totalPage = ceil($totalData / $limit);
 
-/* =========================
-   DATA DOKUMEN
-========================= */
 $query = mysqli_query($conn, "
     SELECT d.*, k.nama_kategori
     FROM dokumen d
@@ -63,9 +51,6 @@ $query = mysqli_query($conn, "
     LIMIT $limit OFFSET $offset
 ");
 
-/* =========================
-   DATA KATEGORI
-========================= */
 $qKategori = mysqli_query($conn, "
     SELECT id_kategori, nama_kategori
     FROM kategori_dokumen
@@ -91,7 +76,6 @@ $qKategori = mysqli_query($conn, "
 <div class="main-content">
 <div class="container mt-4">
 
-    <!-- JUDUL -->
     <div class="row mb-3">
         <div class="col-12 text-center">
             <h4 class="mb-0 print-title">Dokumen</h4>
@@ -107,7 +91,6 @@ $qKategori = mysqli_query($conn, "
         </div>
     <?php unset($_SESSION['flash']); endif; ?>
 
-    <!-- TOMBOL -->
     <div class="row align-items-center mb-3">
         <div class="col-12">
             <a href="tambah_dokumen.php" class="btn btn-primary btn-sm">
@@ -116,11 +99,8 @@ $qKategori = mysqli_query($conn, "
         </div>
     </div>
 
-        <!-- SEARCH & FILTER -->
     <form method="GET" class="mb-3">
         <div class="row no-gutters">
-
-            <!-- SEARCH (LEBAR) -->
             <div class="col-md-9 pr-md-2 mb-2 mb-md-0">
                 <div class="input-group">
                     <input type="text" name="q" class="form-control"
@@ -134,7 +114,6 @@ $qKategori = mysqli_query($conn, "
                 </div>
             </div>
 
-            <!-- FILTER KATEGORI (KANAN) -->
             <div class="col-md-3">
                 <select name="id_kategori" class="form-control"
                         onchange="this.form.submit()">
@@ -152,7 +131,6 @@ $qKategori = mysqli_query($conn, "
         </div>
     </form>
 
-    <!-- TABLE -->
     <div class="card">
         <div class="card-body table-responsive">
             <table class="table table-bordered table-striped table-sm">
@@ -230,7 +208,6 @@ $qKategori = mysqli_query($conn, "
         </div>
     </div>
 
-    <!-- PAGINATION -->
     <?php if ($totalPage > 1): ?>
         <nav class="mt-3">
             <ul class="pagination justify-content-center">

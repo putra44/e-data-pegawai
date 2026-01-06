@@ -5,7 +5,6 @@ require_once "../config/settings.php";
 $active    = $active ?? '';
 $subactive = $subactive ?? '';
 
-// FORMAT NOMOR WA (08xxx → +628xxx)
 $waNumber = '';
 if (!empty($settings['admin_phone'])) {
     $waNumber = preg_replace('/^0/', '+62', $settings['admin_phone']);
@@ -34,7 +33,6 @@ if (!empty($settings['admin_phone'])) {
 
     <div class="collapse navbar-collapse" id="navbarMain">
 
-        <!-- MENU KIRI -->
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item <?= ($active === 'dashboard') ? 'active' : ''; ?>">
@@ -94,10 +92,8 @@ if (!empty($settings['admin_phone'])) {
             <?php endif; ?>
         </ul>
 
-        <!-- MENU KANAN -->
         <ul class="navbar-nav ml-auto">
 
-            <!-- MENU BANTUAN -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle"
                    href="#"
@@ -127,7 +123,6 @@ if (!empty($settings['admin_phone'])) {
                 </div>
             </li>
 
-            <!-- MENU PROFIL -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle d-flex align-items-center"
                    href="#"
@@ -170,7 +165,6 @@ if (!empty($settings['admin_phone'])) {
     </div>
 </nav>
 
-<!-- MODAL LOGOUT -->
 <div class="modal fade" id="modalLogout" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">

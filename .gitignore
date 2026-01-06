@@ -1,0 +1,25 @@
+# KONFIGURASI
+/config/database.php
+
+# FILE UPLOAD
+/assets/uploads/
+/uploads/
+
+# BACKGROUND
+/assets/background/
+
+# CACHE
+*.log
+*.cache
+
+# SESSION
+/sessions/
+
+# ENV FILE 
+.env
+
+# EDITOR & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

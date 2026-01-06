@@ -1,0 +1,26 @@
+RewriteEngine On
+
+<FilesMatch "\.(env|log|sql|ini|bak|sh|inc)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+RedirectMatch 403 ^/config/
+RedirectMatch 403 ^/templates/
+RedirectMatch 403 ^/helpers/
+RedirectMatch 403 ^/ajax/
+RedirectMatch 403 ^/uploads/.*\.(php|php5|phtml)$
+RedirectMatch 403 ^/assets/uploads/.*\.(php|php5|phtml)$
+
+Options -Indexes
+
+<IfModule mod_headers.c>
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+#RewriteCond %{HTTPS} off
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+DirectoryIndex index.php

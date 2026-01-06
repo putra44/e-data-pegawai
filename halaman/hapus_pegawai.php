@@ -1,0 +1,99 @@
+<?php
+session_start();
+require_once "../config/database.php";
+require_once "../config/auth_guard.php";
+require_once "../config/maintenance_guard.php";
+require_once "../config/token.php";
+
+/* =========================
+   VALIDASI REQUEST
+========================= */
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header("Location: arsip_data_pegawai.php");
+    exit;
+}
+
+// 🔐 CSRF TOKEN CHECK
+token_check();
+
+/* =========================
+   VALIDASI ID
+========================= */
+$id = $_POST['id'] ?? null;
+if (!$id || !is_numeric($id)) {
+    header("Location: arsip_data_pegawai.php");
+    exit;
+}
+
+$id = (int)$id;
+
+/* =========================
+   CEK DATA PEGAWAI
+========================= */
+$q = mysqli_query($conn, "
+    SELECT id_pegawai, status, status_data
+    FROM pegawai
+    WHERE id_pegawai = $id
+");
+
+if (mysqli_num_rows($q) !== 1) {
+    $_SESSION['flash'] = [
+        'type' => 'danger',
+        'message' => 'Data pegawai tidak ditemukan.'
+    ];
+    header("Location: arsip_data_pegawai.php");
+    exit;
+}
+
+$data = mysqli_fetch_assoc($q);
+
+/* =========================
+   SYARAT WAJIB HAPUS
+========================= */
+
+// 1️⃣ WAJIB SUDAH ARSIP
+if ($data['status_data'] !== 'arsip') {
+    $_SESSION['flash'] = [
+        'type' => 'warning',
+        'message' => 'Pegawai masih aktif di data utama. Arsipkan terlebih dahulu.'
+    ];
+    header("Location: pegawai.php");
+    exit;
+}
+
+// 2️⃣ WAJIB NONAKTIF
+if ($data['status'] !== 'nonaktif') {
+    $_SESSION['flash'] = [
+        'type' => 'warning',
+        'message' => '<i class="fa fa-info"></i> Pegawai masih berstatus AKTIF. Nonaktifkan terlebih dahulu sebelum menghapus.'
+    ];
+    header("Location: arsip_data_pegawai.php");
+    exit;
+}
+
+/* =========================
+   HAPUS PERMANEN
+========================= */
+$hapus = mysqli_query($conn, "
+    DELETE FROM pegawai
+    WHERE id_pegawai = $id
+");
+
+if ($hapus) {
+
+    // 🔁 optional: rotasi token
+    unset($_SESSION['token']);
+
+    $_SESSION['flash'] = [
+        'type' => 'success',
+        'message' => '<i class="fa fa-trash"></i> Data pegawai berhasil dihapus permanen.'
+    ];
+} else {
+    $_SESSION['flash'] = [
+        'type' => 'danger',
+        'message' => 'Gagal menghapus data pegawai.'
+    ];
+}
+
+header("Location: arsip_data_pegawai.php");
+exit;

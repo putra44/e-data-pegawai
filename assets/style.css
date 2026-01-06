@@ -1,0 +1,89 @@
+/* =========================
+Footer
+========================= */
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex: 1;
+}
+
+/*tabel*/
+.table th {
+    white-space: nowrap;      /* cegah turun baris */
+    vertical-align: middle;   /* tengah secara vertikal */
+    text-align: center;       /* rata tengah */
+}
+/* Kolom aksi agar tombol sejajar */
+.table td.aksi,
+.table th.aksi {
+    white-space: nowrap;
+}
+
+/*Foto Profil*/
+.navbar .nav-link img {
+    border: 2px solid #fff;
+}
+
+/* =====================
+   PRINT MODE
+===================== */
+@media print {
+
+    /* Sembunyikan semua */
+    body * {
+        visibility: hidden;
+    }
+
+    /* Tampilkan area cetak */
+    .print-area,
+    .print-area * {
+        visibility: visible;
+    }
+
+    /* Posisi print */
+    .print-area {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+
+    /* Hilangkan kolom tertentu */
+    .no-print {
+        display: none !important;
+    }
+
+    /* Rapikan tabel saat cetak */
+    table {
+        font-size: 12px;
+    }
+
+    th, td {
+        padding: 6px !important;
+    }
+
+    /* Judul di tengah */
+    .print-title {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+}
+
+/* QUILL TEXT ALIGN SUPPORT */
+.ql-align-center {
+    text-align: center;
+}
+.ql-align-right {
+    text-align: right;
+}
+.ql-align-justify {
+    text-align: justify;
+}

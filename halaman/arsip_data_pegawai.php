@@ -8,9 +8,6 @@ require_once "../config/token.php";
 
 $active = 'arsip-data';
 
-/* =========================
-   SEARCH
-========================= */
 $keyword = $_GET['q'] ?? '';
 $safe = mysqli_real_escape_string($conn, $keyword);
 
@@ -20,18 +17,12 @@ if ($keyword != '') {
     $where .= " AND (p.nip LIKE '%$safe%' OR p.nama LIKE '%$safe%')";
 }
 
-/* =========================
-   PAGINATION
-========================= */
 $limit = 10;
 $page  = $_GET['page'] ?? 1;
 $page  = is_numeric($page) ? (int)$page : 1;
 $page  = max(1, $page);
 $offset = ($page - 1) * $limit;
 
-/* =========================
-   TOTAL DATA
-========================= */
 $totalDataQuery = mysqli_query($conn, "
     SELECT COUNT(*) AS total 
     FROM pegawai p 
@@ -40,9 +31,6 @@ $totalDataQuery = mysqli_query($conn, "
 $totalData = mysqli_fetch_assoc($totalDataQuery)['total'];
 $totalPage = ceil($totalData / $limit);
 
-/* =========================
-   DATA PEGAWAI ARSIP
-========================= */
 $query = mysqli_query($conn, "
     SELECT 
         p.*,
@@ -77,7 +65,6 @@ $query = mysqli_query($conn, "
 <div class="main-content">
 <div class="container mt-4">
 
-    <!-- JUDUL -->
     <div class="row mb-3">
         <div class="col-12 text-center">
             <h4 class="mb-0 print-title">Arsip Data Pegawai</h4>
@@ -93,7 +80,6 @@ $query = mysqli_query($conn, "
         </div>
     <?php unset($_SESSION['flash']); endif; ?>
 
-    <!-- SEARCH -->
     <form method="GET" class="mb-3">
         <div class="input-group">
             <input type="text" name="q" class="form-control"
@@ -107,7 +93,6 @@ $query = mysqli_query($conn, "
         </div>
     </form>
 
-    <!-- TABLE -->
     <div class="card">
         <div class="card-body table-responsive">
             <table class="table table-bordered table-striped table-sm">
@@ -158,8 +143,6 @@ $query = mysqli_query($conn, "
                         </td>
 
                         <td class="aksi text-center">
-
-                            <!-- RESTORE -->
                             <form method="POST"
                                 action="restore_pegawai.php"
                                 style="display:inline;">
@@ -177,8 +160,7 @@ $query = mysqli_query($conn, "
                                         <i class="fa fa-undo"></i>
                                 </button>
                             </form>
-
-                            <!-- HAPUS PERMANEN -->
+                           
                             <?php if ($row['status'] === 'nonaktif'): ?>
                                 <form method="POST"
                                     action="hapus_pegawai.php"
@@ -218,8 +200,7 @@ $query = mysqli_query($conn, "
             </table>
         </div>
     </div>
-
-    <!-- PAGINATION -->
+   
     <?php if ($totalPage > 1): ?>
         <nav class="mt-3">
             <ul class="pagination justify-content-center">

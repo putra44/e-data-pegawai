@@ -12,9 +12,6 @@ require_once "../helpers/date.php";
 $active = 'admin-panel';
 $subactive = 'pengumuman';
 
-/* =========================
-   TAMBAH PENGUMUMAN
-========================= */
 if (isset($_POST['simpan'])) {
 
     token_check();
@@ -43,9 +40,6 @@ if (isset($_POST['simpan'])) {
     }
 }
 
-/* =========================
-   TOGGLE AKTIF / NONAKTIF
-========================= */
 if (isset($_POST['aksi']) && $_POST['aksi'] === 'toggle') {
 
     token_check();
@@ -78,9 +72,6 @@ if (isset($_POST['aksi']) && $_POST['aksi'] === 'toggle') {
     exit;
 }
 
-/* =========================
-   TOGGLE PINNED
-========================= */
 if (isset($_POST['aksi']) && $_POST['aksi'] === 'pin') {
 
     token_check();
@@ -115,9 +106,6 @@ if (isset($_POST['aksi']) && $_POST['aksi'] === 'pin') {
     exit;
 }
 
-/* =========================
-   HAPUS PERMANEN (HANYA NONAKTIF)
-========================= */
 if (isset($_POST['aksi']) && $_POST['aksi'] === 'hapus') {
 
     token_check();
@@ -153,9 +141,6 @@ if (isset($_POST['aksi']) && $_POST['aksi'] === 'hapus') {
     exit;
 }
 
-/* =========================
-   DATA PENGUMUMAN
-========================= */
 $q = mysqli_query($conn, "
     SELECT p.*, u.nama
     FROM pengumuman p
@@ -181,8 +166,7 @@ $q = mysqli_query($conn, "
 
 <div class="main-content">
 <div class="container mt-4">
-
-<!-- JUDUL -->
+   
     <div class="row mb-3">
         <div class="col-12 text-center">
             <h4 class="mb-0">
@@ -197,7 +181,6 @@ $q = mysqli_query($conn, "
 </div>
 <?php unset($_SESSION['flash']); endif; ?>
 
-<!-- FORM -->
 <div class="card mb-4">
 <div class="card-body">
 <form method="POST">
@@ -242,7 +225,6 @@ $q = mysqli_query($conn, "
 </div>
 </div>
 
-<!-- TABLE -->
 <div class="card">
 <div class="card-body table-responsive">
 <table class="table table-bordered table-sm">
@@ -280,7 +262,6 @@ $q = mysqli_query($conn, "
     <td><?= tanggal($row['created_at']); ?></td>
     <td class="text-center">
 
-    <!-- EDIT (selalu ada) -->
     <a href="edit_pengumuman.php?id=<?= $row['id_pengumuman']; ?>"
        class="btn btn-warning btn-sm"
        title="Edit Pengumuman">
@@ -289,7 +270,6 @@ $q = mysqli_query($conn, "
 
     <?php if ($row['status'] === 'aktif'): ?>
 
-        <!-- PIN / UNPIN (hanya saat aktif) -->
         <form method="POST" action="kelola_pengumuman.php" class="d-inline">
             <input type="hidden" name="aksi" value="pin">
             <input type="hidden" name="id" value="<?= $row['id_pengumuman']; ?>">
@@ -308,7 +288,6 @@ $q = mysqli_query($conn, "
             <?php endif; ?>
         </form>
 
-        <!-- NONAKTIFKAN -->
         <form method="POST" action="kelola_pengumuman.php" class="d-inline">
             <input type="hidden" name="aksi" value="toggle">
             <input type="hidden" name="id" value="<?= $row['id_pengumuman']; ?>">
@@ -323,7 +302,6 @@ $q = mysqli_query($conn, "
 
     <?php else: ?>
 
-        <!-- AKTIFKAN -->
         <form method="POST" action="kelola_pengumuman.php" class="d-inline">
             <input type="hidden" name="aksi" value="toggle">
             <input type="hidden" name="id" value="<?= $row['id_pengumuman']; ?>">
@@ -335,7 +313,6 @@ $q = mysqli_query($conn, "
             </button>
         </form>
 
-        <!-- HAPUS PERMANEN -->
         <form method="POST" action="kelola_pengumuman.php" class="d-inline">
             <input type="hidden" name="aksi" value="hapus">
             <input type="hidden" name="id" value="<?= $row['id_pengumuman']; ?>">

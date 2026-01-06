@@ -8,14 +8,12 @@ require_once "../config/token.php";
 
 $active = 'pegawai';
 
-// VALIDASI ID
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 if ($id <= 0) {
     header("Location: pegawai.php");
     exit;
 }
 
-// AMBIL DATA
 $data = mysqli_query($conn, "SELECT * FROM pegawai WHERE id_pegawai=$id");
 $pegawai = mysqli_fetch_assoc($data);
 if (!$pegawai) {
@@ -23,9 +21,6 @@ if (!$pegawai) {
     exit;
 }
 
-/* =========================
-   AMBIL KATEGORI JABATAN
-========================= */
 $qJabatan = mysqli_query($conn, "
     SELECT id_jabatan, nama_jabatan
     FROM kategori_jabatan
@@ -33,9 +28,6 @@ $qJabatan = mysqli_query($conn, "
     ORDER BY nama_jabatan ASC
 ");
 
-/* =========================
-   AMBIL KATEGORI DEPARTEMEN
-========================= */
 $qDepartemen = mysqli_query($conn, "
     SELECT id_departemen, nama_departemen
     FROM kategori_departemen
@@ -43,7 +35,6 @@ $qDepartemen = mysqli_query($conn, "
     ORDER BY nama_departemen ASC
 ");
 
-// PROSES UPDATE
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
 
     token_check();
@@ -56,7 +47,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
     $alamat         = mysqli_real_escape_string($conn, $_POST['alamat']);
     $status         = $_POST['status'];
 
-    // CEK NIP DUPLIKAT (KECUALI DIRI SENDIRI)
     $cekNip = mysqli_query($conn, "
         SELECT id_pegawai FROM pegawai 
         WHERE nip='$nip' AND id_pegawai != '$id'

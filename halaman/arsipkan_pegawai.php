@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// 🔐 CSRF CHECK
 token_check();
 
 /* =========================
@@ -57,7 +56,6 @@ $arsip = mysqli_query($conn, "
 
 if ($arsip) {
 
-    // 🔁 optional: rotasi token
     unset($_SESSION['token']);
 
     $_SESSION['flash'] = [
